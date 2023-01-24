@@ -1,0 +1,16 @@
+{
+  "name": "hydrogen-ui-sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "pnpm run -r --stream build" ,
+    "dev": "pnpm run -r --stream --parallel dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
