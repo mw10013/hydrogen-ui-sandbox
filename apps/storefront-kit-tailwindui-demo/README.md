@@ -1,3 +1,5 @@
+# Storefront Kit TailwindUI Demo
+
 ## Notes
 
 - hack: ci uses .env.example
