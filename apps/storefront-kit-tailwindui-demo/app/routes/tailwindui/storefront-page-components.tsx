@@ -431,7 +431,6 @@ export function Navigation({ setOpen }: { setOpen: (open: boolean) => void }) {
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
 
-          {/* Logo */}
           <div className="ml-4 flex lg:ml-0">
             <a href="#">
               <span className="sr-only">Your Company</span>
