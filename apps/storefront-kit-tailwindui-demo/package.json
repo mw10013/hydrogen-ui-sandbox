@@ -10,6 +10,7 @@
     "dev:css": "pnpm generate:css --watch",
     "dev:remix": "remix dev",
     "generate:css": "tailwindcss -i ./styles/tailwind.css -o ./app/styles/tailwind.css",
+    "codegen": "graphql-codegen --config graphql-codegen.config.ts",
     "test": "vitest",
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",

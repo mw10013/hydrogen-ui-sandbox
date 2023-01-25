@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { CartProvider, ShopifyProvider } from "@shopify/storefront-kit-react";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 // export type ContextType = {};
@@ -42,10 +43,21 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <div className="min-h-full">
-          {/* <Outlet context={context} /> */}
-          <Outlet />
-        </div>
+        <ShopifyProvider
+          shopifyConfig={{
+            storeDomain: `https://hydrogen-preview.myshopify.com`,
+            storefrontToken: "3b580e70970c4528da70c98e097c2fa0",
+            storefrontApiVersion: "2023-01",
+            locale: "EN-US",
+          }}
+        >
+          <CartProvider>
+            <div className="min-h-full">
+              {/* <Outlet context={context} /> */}
+              <Outlet />
+            </div>
+          </CartProvider>
+        </ShopifyProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
