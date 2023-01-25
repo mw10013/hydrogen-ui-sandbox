@@ -1,7 +1,4 @@
-import {
-  PolymorphicButton,
-  PolymorphicText,
-} from "@/components/PolymorphicComponent";
+import { PolymorphicText } from "@/components/PolymorphicComponent";
 import { graphql } from "@/lib/gql";
 import { request } from "graphql-request";
 import { shopClient } from "@/lib/utils";
@@ -39,27 +36,28 @@ const query = graphql(`
 `);
 
 export const loader = (async () => {
-  const data = await request({
+  // https://github.com/remix-run/remix/issues/5211
+  const data_ = await request({
     url: shopClient.getStorefrontApiUrl(),
     document: query,
     requestHeaders: shopClient.getPublicTokenHeaders(),
   });
 
   return json({
-    data,
+    data_,
   });
 }) satisfies LoaderFunction;
 
 export default function Home() {
-  const { data } = useLoaderData<typeof loader>();
-  // const { session } = useOutletContext<ContextType>();
+  // https://github.com/remix-run/remix/issues/5211
+  const { data_ } = useLoaderData<typeof loader>();
   return (
     <div className="mt-8 max-w-sm mx-auto font-bold text-lg">
       <PolymorphicText as="div" color="indigo" className="text-4xl">
         Storefront Kit TailwindUI Demo
       </PolymorphicText>
       <div className="flex flex-col w-32 mx-auto gap-4 mt-8">
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+        <pre>{JSON.stringify(data_, null, 2)}</pre>
       </div>
     </div>
   );
