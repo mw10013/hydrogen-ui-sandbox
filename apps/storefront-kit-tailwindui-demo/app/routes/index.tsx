@@ -4,7 +4,7 @@ import { request } from "graphql-request";
 import { shopClient } from "@/lib/utils";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 
 const query = graphql(`
   query Home {
