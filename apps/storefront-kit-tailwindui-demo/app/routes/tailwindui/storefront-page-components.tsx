@@ -217,15 +217,14 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-// export function Container({ children }: { children: React.ReactNode }) {
-//   return <div className="bg-white">{children}</div>;
-// }
+export function Container({ children }: { children: React.ReactNode }) {
+  return <div className="bg-white">{children}</div>;
+}
 
-export default function Example() {
+export function Header() {
   const [open, setOpen] = useState(false);
-
   return (
-    <div className="bg-white">
+    <>
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -716,7 +715,14 @@ export default function Example() {
           </div>
         </div>
       </header>
+    </>
+  );
+}
 
+export default function Example() {
+  return (
+    <Container>
+      <Header />
       <main>
         {/* Category section */}
         <section aria-labelledby="category-heading" className="bg-gray-50">
@@ -1107,6 +1113,6 @@ export default function Example() {
           </div>
         </div>
       </footer>
-    </div>
+    </Container>
   );
 }
