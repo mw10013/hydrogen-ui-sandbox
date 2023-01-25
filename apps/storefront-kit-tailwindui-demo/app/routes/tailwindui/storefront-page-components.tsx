@@ -768,21 +768,6 @@ export function TextFieldSr({
   );
 }
 
-// export function TextField({
-//   id,
-//   label,
-//   type = "text",
-//   className = "",
-//   ...props
-// }: { id: string; label: string } & React.ComponentPropsWithoutRef<"input">) {
-//   return (
-//     <div className={className}>
-//       {label && <Label id={id}>{label}</Label>}
-//       <input id={id} type={type} {...props} className={formClasses} />
-//     </div>
-//   );
-// }
-
 export function Footer() {
   return (
     <footer aria-labelledby="footer-heading" className="bg-white">
