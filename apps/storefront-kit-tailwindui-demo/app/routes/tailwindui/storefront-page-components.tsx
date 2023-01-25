@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+// https://tailwindui.com/components/ecommerce/page-examples/storefront-pages
+// With image tiles and feature sections
 /*
   This example requires some changes to your config:
   
