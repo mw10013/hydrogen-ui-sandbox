@@ -735,6 +735,54 @@ export function Header() {
   );
 }
 
+export function TextField() {
+  return (
+    <input
+      id="email-address"
+      type="text"
+      autoComplete="email"
+      required
+      className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white py-2 px-4 text-base text-indigo-500 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+    />
+  );
+}
+
+export function TextFieldSr({
+  id,
+  label,
+  type = "text",
+  ...props
+}: { label: string } & React.ComponentPropsWithoutRef<"input">) {
+  return (
+    <>
+      <label htmlFor={id} className="sr-only">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white py-2 px-4 text-base text-indigo-500 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        {...props}
+      />
+    </>
+  );
+}
+
+// export function TextField({
+//   id,
+//   label,
+//   type = "text",
+//   className = "",
+//   ...props
+// }: { id: string; label: string } & React.ComponentPropsWithoutRef<"input">) {
+//   return (
+//     <div className={className}>
+//       {label && <Label id={id}>{label}</Label>}
+//       <input id={id} type={type} {...props} className={formClasses} />
+//     </div>
+//   );
+// }
+
 export function Footer() {
   return (
     <footer aria-labelledby="footer-heading" className="bg-white">
@@ -814,18 +862,14 @@ export function Footer() {
               Sign up for our newsletter
             </h3>
             <p className="mt-6 text-sm text-gray-500">
-              The latest deals and savings, sent to your inbox weekly.
+              The latest deals and savings, sent to your inbox weekly.!!!
             </p>
             <form className="mt-2 flex sm:max-w-md">
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
+              <TextFieldSr
                 id="email-address"
-                type="text"
+                label="Email address"
                 autoComplete="email"
                 required
-                className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white py-2 px-4 text-base text-indigo-500 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
               />
               <div className="ml-4 flex-shrink-0">
                 <button
