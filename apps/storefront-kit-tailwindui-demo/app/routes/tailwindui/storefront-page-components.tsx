@@ -213,7 +213,7 @@ const footerNavigation = {
   ],
 };
 
-function classNames(...classes: string[]) {
+function classNames(...classes: (string | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -768,6 +768,26 @@ export function TextFieldSr({
   );
 }
 
+export function Button({
+  className,
+  children,
+  ...props
+}: React.ComponentPropsWithoutRef<"button">) {
+  return (
+    <button
+      type="submit"
+      className={classNames(
+        className,
+        // "flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        "flex items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function Footer() {
   return (
     <footer aria-labelledby="footer-heading" className="bg-white">
@@ -847,7 +867,7 @@ export function Footer() {
               Sign up for our newsletter
             </h3>
             <p className="mt-6 text-sm text-gray-500">
-              The latest deals and savings, sent to your inbox weekly.!!!
+              The latest deals and savings, sent to your inbox weekly.
             </p>
             <form className="mt-2 flex sm:max-w-md">
               <TextFieldSr
@@ -856,14 +876,17 @@ export function Footer() {
                 autoComplete="email"
                 required
               />
-              <div className="ml-4 flex-shrink-0">
+              {/* <div className="ml-4 flex-shrink-0">
                 <button
-                  type="submit"
-                  className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                type="submit"
+                className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                  Sign up
+                Sign up
                 </button>
-              </div>
+              </div> */}
+              <Button type="submit" className="ml-4 flex-shrink-0">
+                Sign up
+              </Button>
             </form>
           </div>
         </div>
