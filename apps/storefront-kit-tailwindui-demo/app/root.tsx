@@ -24,8 +24,11 @@ export const links: LinksFunction = () => {
 
 export const meta: V2_MetaFunction = () => {
   return [
-    { title: "Remix Template" },
-    { name: "description", content: "Template for remix and tailwind." },
+    { title: "Storefront Kit TailwindUI Demo" },
+    {
+      name: "description",
+      content: "Shopify demo using storefront kit and tailwindui.",
+    },
   ];
 };
 
