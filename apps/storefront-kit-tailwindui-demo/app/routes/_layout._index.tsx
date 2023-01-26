@@ -4,6 +4,7 @@ import { shopClient } from "@/lib/utils";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { Container } from "@/components/Container";
 
 const query = graphql(`
   query Home {
@@ -51,9 +52,9 @@ export default function Home() {
   // https://github.com/remix-run/remix/issues/5211
   const { data_ } = useLoaderData<typeof loader>();
   return (
-    <div>
+    <Container>
       <p>Index</p>
       <pre>{JSON.stringify(data_, null, 2)}</pre>
-    </div>
+    </Container>
   );
 }

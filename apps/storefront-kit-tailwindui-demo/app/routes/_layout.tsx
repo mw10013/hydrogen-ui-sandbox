@@ -1,12 +1,11 @@
-import { Container } from "@/components/Container";
 import { Header } from "@/components/Header";
 import { Outlet } from "@remix-run/react";
 
 export default function Layout() {
   return (
-    <Container>
+    <div className="bg-white">
       <Header />
       <Outlet />
-    </Container>
+    </div>
   );
 }

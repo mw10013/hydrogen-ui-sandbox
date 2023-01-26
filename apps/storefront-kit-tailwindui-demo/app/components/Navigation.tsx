@@ -7,6 +7,7 @@ import { Logo } from "@/components/Logo";
 import { Popover, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment } from "react";
+import { Link } from "@remix-run/react";
 
 export const navigation = {
   categories: [
@@ -156,22 +157,22 @@ export function Navigation({ setOpen }: { setOpen: (open: boolean) => void }) {
           </button>
 
           <div className="ml-4 flex lg:ml-0">
-            <a href="/">
+            <Link to="/">
               <span className="sr-only">Your Company</span>
               <Logo className="h-8 w-auto" />
-            </a>
+            </Link>
           </div>
 
           <div className="hidden lg:ml-8 lg:block lg:self-stretch">
             <div className="flex h-full space-x-8">
               {navigation.pages.map((page) => (
-                <a
+                <Link
                   key={page.name}
-                  href={page.href}
+                  to={page.href}
                   className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                 >
                   {page.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>

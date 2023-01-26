@@ -48,7 +48,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="antialiased font-sans bg-gray-200 overflow-hidden">
+      <body className="antialiased font-sans bg-gray-200 overflow-hidden-">
         <ShopifyProvider
           shopifyConfig={{
             storeDomain: `https://hydrogen-preview.myshopify.com`,
@@ -58,10 +58,10 @@ export default function App() {
           }}
         >
           <CartProvider>
-            {/* <Outlet /> */}
-            <div className="min-h-full">
+            <Outlet />
+            {/* <div className="min-h-full">
               <Outlet />
-            </div>
+            </div> */}
           </CartProvider>
         </ShopifyProvider>
         <ScrollRestoration />
