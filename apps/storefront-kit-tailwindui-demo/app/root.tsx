@@ -58,9 +58,7 @@ export default function App() {
           }}
         >
           <CartProvider>
-            <div>
-              <Outlet />
-            </div>
+            <Outlet />
             {/* <div className="min-h-full">
               <Outlet />
             </div> */}
