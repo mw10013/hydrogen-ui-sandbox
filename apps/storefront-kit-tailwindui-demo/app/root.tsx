@@ -58,10 +58,10 @@ export default function App() {
           }}
         >
           <CartProvider>
-            <Outlet />
-            {/* <div className="min-h-full">
+            {/* <Outlet /> */}
+            <div className="min-h-full">
               <Outlet />
-            </div> */}
+            </div>
           </CartProvider>
         </ShopifyProvider>
         <ScrollRestoration />
