@@ -35,6 +35,9 @@ export const meta: V2_MetaFunction = () => {
 export default function App() {
   // const context: ContextType = {};
 
+  // https://tailwindui.com/components/ecommerce/page-examples/storefront-pages
+  // With image tiles and feature sections
+  // <body>
   // <div> with min-h-full help register layout correctly.
   // Mimics nextjs: #__next { min-height: 100%; }
   return (
@@ -45,7 +48,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="antialiased font-sans bg-gray-200 overflow-hidden">
         <ShopifyProvider
           shopifyConfig={{
             storeDomain: `https://hydrogen-preview.myshopify.com`,
@@ -55,10 +58,12 @@ export default function App() {
           }}
         >
           <CartProvider>
-            <div className="min-h-full">
-              {/* <Outlet context={context} /> */}
+            <div>
               <Outlet />
             </div>
+            {/* <div className="min-h-full">
+              <Outlet />
+            </div> */}
           </CartProvider>
         </ShopifyProvider>
         <ScrollRestoration />

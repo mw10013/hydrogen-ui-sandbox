@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <Container>
       <Header />
-      <pre>{JSON.stringify(data_, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(data_, null, 2)}</pre> */}
     </Container>
   );
 }
