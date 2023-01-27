@@ -734,18 +734,6 @@ export function Header() {
   );
 }
 
-export function TextField() {
-  return (
-    <input
-      id="email-address"
-      type="text"
-      autoComplete="email"
-      required
-      className="w-full min-w-0 appearance-none rounded-md border border-gray-300 bg-white py-2 px-4 text-base text-indigo-500 placeholder-gray-500 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-    />
-  );
-}
-
 export function TextFieldSr({
   id,
   label,
