@@ -15,6 +15,14 @@ const query = graphql(`
       nodes {
         handle
         title
+        priceRange {
+          maxVariantPrice {
+            amount
+          }
+          minVariantPrice {
+            amount
+          }
+        }
         featuredImage {
           url(transform: null)
           altText
