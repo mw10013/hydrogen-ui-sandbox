@@ -42,6 +42,7 @@ export const loader = (async () => {
     document: query,
     requestHeaders: shopClient.getPublicTokenHeaders(),
   });
+  console.log({url: shopClient.getStorefrontApiUrl(), requestHeaders: shopClient.getPublicTokenHeaders()})
 
   return json({
     data_,

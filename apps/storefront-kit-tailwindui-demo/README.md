@@ -1,5 +1,19 @@
 # Storefront Kit TailwindUI Demo
 
+## Graphql
+
+- https://shopify.dev/custom-storefronts/tools/graphiql-storefront-api
+- https://shopify.dev/graphiql/storefront-graphiql
+- https://shopify-graphiql-app.shopifycloud.com/login
+- https://github.com/graphql/graphql-playground
+- https://cloud.hasura.io/public/graphiql?header=content-type%3Aapplication%2Fjson&header=Authorization%3Abearer+%3Center+your+token+here%3E&endpoint=https%3A%2F%2Fhydrogen-preview.myshopify.com%2Fapi%2F2023-01%2Fgraphql.json
+- url: "https://hydrogen-preview.myshopify.com/api/2023-01/graphql.json"
+- "content-type": "application/json",
+  "X-SDK-Variant": "storefront-kit",
+  "X-SDK-Variant-Source": "react",
+  "X-SDK-Version": "2023-01",
+  "X-Shopify-Storefront-Access-Token": "3b580e70970c4528da70c98e097c2fa0",
+
 ## Notes
 
 - hack: ci uses .env.example
