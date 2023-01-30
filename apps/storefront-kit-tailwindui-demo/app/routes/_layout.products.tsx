@@ -1,10 +1,10 @@
 import { Container } from "@/components/Container";
 import { graphql } from "@/lib/gql";
-import { ProductsQuery } from "@/lib/gql/graphql";
 import { shopClient } from "@/lib/utils";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { Money } from "@shopify/storefront-kit-react";
 import request from "graphql-request";
 
 const FIRST = 6;
@@ -18,9 +18,11 @@ const query = graphql(`
         priceRange {
           maxVariantPrice {
             amount
+            currencyCode
           }
           minVariantPrice {
             amount
+            currencyCode
           }
         }
         featuredImage {
@@ -53,8 +55,6 @@ export const loader = (async () => {
   });
 }) satisfies LoaderFunction;
 
-type T = ProductsQuery;
-
 function ProductGrid() {
   // https://github.com/remix-run/remix/issues/5211
   const { data_ } = useLoaderData<typeof loader>();
@@ -76,7 +76,29 @@ function ProductGrid() {
               {product.title}
             </Link>
           </h3>
-          {/* <p className="mt-1 text-sm text-gray-500">{product.price}</p> */}
+          <p className="mt-1 text-sm text-gray-500">
+            {product.priceRange.minVariantPrice.amount ===
+            product.priceRange.maxVariantPrice.amount ? (
+              <Money
+                data={product.priceRange.minVariantPrice}
+                withoutTrailingZeros
+              />
+            ) : (
+              <span>
+                <Money
+                  as="span"
+                  data={product.priceRange.minVariantPrice}
+                  withoutTrailingZeros
+                />{" "}
+                -{" "}
+                <Money
+                  as="span"
+                  data={product.priceRange.maxVariantPrice}
+                  withoutTrailingZeros
+                />
+              </span>
+            )}
+          </p>
         </div>
       ))}
     </div>
@@ -84,16 +106,12 @@ function ProductGrid() {
 }
 
 export default function Products() {
-  // https://github.com/remix-run/remix/issues/5211
-  // const { data_ } = useLoaderData<typeof loader>();
-
   return (
     <Container className="py-8">
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">
         Products
       </h2>
       <ProductGrid />
-      {/* <pre>{JSON.stringify(data_, null, 2)}</pre> */}
     </Container>
   );
 }
