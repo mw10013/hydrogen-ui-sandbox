@@ -351,22 +351,17 @@ export default function Example() {
 
           <div className="mt-8 lg:col-span-5">
             <ProductForm productData={product} />
-
-            {/* Product details */}
             <div className="mt-10">
               <h2 className="text-sm font-medium text-gray-900">Description</h2>
-
               <div
                 className="prose prose-sm mt-4 text-gray-500"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </div>
-
             <div className="mt-8 border-t border-gray-200 pt-8">
               <h2 className="text-sm font-medium text-gray-900">
                 Fabric &amp; Care
               </h2>
-
               <div className="prose prose-sm mt-4 text-gray-500">
                 <ul>
                   {product.details.map((item) => (
@@ -375,8 +370,6 @@ export default function Example() {
                 </ul>
               </div>
             </div>
-
-            {/* Policies */}
             <section aria-labelledby="policies-heading" className="mt-10">
               <h2 id="policies-heading" className="sr-only">
                 Our Policies
