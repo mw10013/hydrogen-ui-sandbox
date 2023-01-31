@@ -29,7 +29,24 @@ const product = {
       src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg",
       alt: "Angled front view with bag zipped and handles upright.",
     },
-    // More images...
+    {
+      id: 2,
+      name: "Angled view",
+      src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-02.jpg",
+      alt: "Angled front view with bag zipped and handles upright.",
+    },
+    {
+      id: 3,
+      name: "Angled view",
+      src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-03.jpg",
+      alt: "Angled front view with bag zipped and handles upright.",
+    },
+    {
+      id: 4,
+      name: "Angled view",
+      src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg",
+      alt: "Angled front view with bag zipped and handles upright.",
+    },
   ],
   colors: [
     {
@@ -60,11 +77,36 @@ const product = {
         "Water-resistant",
       ],
     },
+    {
+      name: "Care",
+      items: [
+        "Multiple strap configurations",
+        "Spacious interior with top zip",
+        "Leather handle and tabs",
+      ],
+    },
+    {
+      name: "Shipping",
+      items: [
+        "Leather handle and tabs",
+        "Interior dividers",
+        "Stainless strap loops",
+        "Water-resistant",
+      ],
+    },
+    {
+      name: "Returns",
+      items: [
+        "Stainless strap loops",
+        "Double stitched construction",
+        "Water-resistant",
+      ],
+    },
     // More sections...
   ],
 };
 
-function classNames(...classes) {
+function classNames(...classes: (string | boolean | null | undefined)[]) {
   return classes.filter(Boolean).join(" ");
 }
 
