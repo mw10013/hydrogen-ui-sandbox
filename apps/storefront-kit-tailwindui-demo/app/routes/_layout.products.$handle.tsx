@@ -1,13 +1,14 @@
 import { Container } from "@/components/Container";
 import { graphql } from "@/lib/gql";
-import { ProductQuery } from "@/lib/gql/graphql";
 import { shopClient } from "@/lib/utils";
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import clsx from "clsx";
 import request from "graphql-request";
 import invariant from "tiny-invariant";
+
+type ProductType = SerializeFrom<typeof loader>["data_"]["product"];
 
 const query = graphql(`
   query Product($handle: String!) {
@@ -60,19 +61,16 @@ export const loader = (async ({ params }) => {
   });
 }) satisfies LoaderFunction;
 
-function ProductTitle() {
-  const { data_ } = useLoaderData<typeof loader>();
+function ProductTitle({ product }: { product: ProductType }) {
   return (
     <div className="flex justify-between">
-      <h1 className="text-xl font-medium text-gray-900">
-        {data_.product.title}
-      </h1>
+      <h1 className="text-xl font-medium text-gray-900">{product.title}</h1>
       <p className="text-xl font-medium text-gray-900">Price</p>
     </div>
   );
 }
 
-function ProductGallery() {
+function ProductGallery({ product }: { product: ProductType }) {
   const { data_ } = useLoaderData<typeof loader>();
   return (
     <>
@@ -100,10 +98,10 @@ export default function Product() {
     <Container className="mt-8">
       <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
         <div className="lg:col-span-5 lg:col-start-8">
-          <ProductTitle />
+          <ProductTitle product={data_.product} />
         </div>
         <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-          <ProductGallery />
+          <ProductGallery product={data_.product} />
         </div>
       </div>
       <div>
