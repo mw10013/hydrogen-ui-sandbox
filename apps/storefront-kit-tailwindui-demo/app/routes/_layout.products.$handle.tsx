@@ -4,6 +4,7 @@ import { shopClient } from "@/lib/utils";
 import type { LoaderFunction, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { ProductProvider } from "@shopify/storefront-kit-react";
 import clsx from "clsx";
 import request from "graphql-request";
 import invariant from "tiny-invariant";
@@ -40,6 +41,43 @@ const query = graphql(`
         }
       }
     }
+    fragmentedProduct: product(handle: $handle) {
+      ...ProductDataShallowFragment
+      ...ProductDataDeepFragment
+    }
+  }
+
+  fragment ProductDataShallowFragment on Product {
+    handle
+    title
+    description
+    images(first: 3) {
+      nodes {
+        id
+        url(transform: null)
+        altText
+      }
+    }
+  }
+
+  fragment ProductDataDeepFragment on Product {
+    handle
+    options {
+      name
+      values
+    }
+    variants(first: 100) {
+      nodes {
+        id
+        priceV2 {
+          amount
+        }
+        selectedOptions {
+          name
+          value
+        }
+      }
+    }
   }
 `);
 
@@ -57,7 +95,7 @@ export const loader = (async ({ params }) => {
     throw new Error(`Invalid product handle: ${params.handle}`);
   }
   return json({
-    data_: { product: data_.product },
+    data_: { ...data_, product: data_.product },
   });
 }) satisfies LoaderFunction;
 
@@ -95,18 +133,20 @@ function ProductGallery({ product }: { product: ProductType }) {
 export default function Product() {
   const { data_ } = useLoaderData<typeof loader>();
   return (
-    <Container className="mt-8">
-      <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
-        <div className="lg:col-span-5 lg:col-start-8">
-          <ProductTitle product={data_.product} />
+    <ProductProvider data={data_.product}>
+      <Container className="mt-8">
+        <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+          <div className="lg:col-span-5 lg:col-start-8">
+            <ProductTitle product={data_.product} />
+          </div>
+          <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
+            <ProductGallery product={data_.product} />
+          </div>
         </div>
-        <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-          <ProductGallery product={data_.product} />
+        <div>
+          <pre>{JSON.stringify(data_, null, 2)}</pre>
         </div>
-      </div>
-      <div>
-        <pre>{JSON.stringify(data_, null, 2)}</pre>
-      </div>
-    </Container>
+      </Container>
+    </ProductProvider>
   );
 }
