@@ -208,14 +208,13 @@ export function RadioGroupSmallCards({
   );
 }
 
-export function RadioGroupSmallCardsOption({
+RadioGroupSmallCards.Option = function RadioGroupSmallCardsOption({
   name,
   value,
   disabled,
 }: Parameters<typeof RadioGroup.Option>[0]) {
   return (
     <RadioGroup.Option
-      // key={name}
       value={value}
       className={({ active, checked }) =>
         classNames(
@@ -234,7 +233,7 @@ export function RadioGroupSmallCardsOption({
       <RadioGroup.Label as="span">{name}</RadioGroup.Label>
     </RadioGroup.Option>
   );
-}
+};
 
 export function ProductForm({ productData }: { productData: typeof product }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
@@ -305,7 +304,7 @@ export function ProductForm({ productData }: { productData: typeof product }) {
           className="mt-2"
         >
           {product.sizes.map((size) => (
-            <RadioGroupSmallCardsOption
+            <RadioGroupSmallCards.Option
               key={size.name}
               name={size.name}
               value={size}
@@ -313,40 +312,6 @@ export function ProductForm({ productData }: { productData: typeof product }) {
             />
           ))}
         </RadioGroupSmallCards>
-
-        <RadioGroup
-          value={selectedSize}
-          onChange={setSelectedSize}
-          className="mt-2"
-        >
-          <RadioGroup.Label className="sr-only">
-            {" "}
-            Choose a size{" "}
-          </RadioGroup.Label>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-            {product.sizes.map((size) => (
-              <RadioGroup.Option
-                key={size.name}
-                value={size}
-                className={({ active, checked }) =>
-                  classNames(
-                    size.inStock
-                      ? "cursor-pointer focus:outline-none"
-                      : "opacity-25 cursor-not-allowed",
-                    active ? "ring-2 ring-offset-2 ring-indigo-500" : "",
-                    checked
-                      ? "bg-indigo-600 border-transparent text-white hover:bg-indigo-700"
-                      : "bg-white border-gray-200 text-gray-900 hover:bg-gray-50",
-                    "border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1"
-                  )
-                }
-                disabled={!size.inStock}
-              >
-                <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
-              </RadioGroup.Option>
-            ))}
-          </div>
-        </RadioGroup>
       </div>
 
       <button
