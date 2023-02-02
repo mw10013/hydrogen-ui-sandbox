@@ -192,6 +192,42 @@ export function ProductGallery({
   );
 }
 
+export function RadioGroupSmallCards(props: Parameters<typeof RadioGroup>[0]) {
+  return (
+    <RadioGroup
+      // value={selectedSize}
+      // onChange={setSelectedSize}
+      // className="mt-2"
+      {...props}
+    >
+      <RadioGroup.Label className="sr-only"> Choose a size </RadioGroup.Label>
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+        {product.sizes.map((size) => (
+          <RadioGroup.Option
+            key={size.name}
+            value={size}
+            className={({ active, checked }) =>
+              classNames(
+                size.inStock
+                  ? "cursor-pointer focus:outline-none"
+                  : "opacity-25 cursor-not-allowed",
+                active ? "ring-2 ring-offset-2 ring-indigo-500" : "",
+                checked
+                  ? "bg-indigo-600 border-transparent text-white hover:bg-indigo-700"
+                  : "bg-white border-gray-200 text-gray-900 hover:bg-gray-50",
+                "border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1"
+              )
+            }
+            disabled={!size.inStock}
+          >
+            <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
+          </RadioGroup.Option>
+        ))}
+      </div>
+    </RadioGroup>
+  );
+}
+
 export function ProductForm({ productData }: { productData: typeof product }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
@@ -253,6 +289,12 @@ export function ProductForm({ productData }: { productData: typeof product }) {
             See sizing chart
           </a>
         </div>
+
+        <RadioGroupSmallCards
+          value={selectedSize}
+          onChange={setSelectedSize}
+          className="mt-2"
+        />
 
         <RadioGroup
           value={selectedSize}

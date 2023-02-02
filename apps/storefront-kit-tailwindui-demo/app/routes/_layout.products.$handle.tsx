@@ -1,12 +1,14 @@
 import { Container } from "@/components/Container";
+import { ProductOptions } from "@/components/product/ProductOptions";
 import { graphql } from "@/lib/gql";
 import { shopClient } from "@/lib/utils";
 import type { LoaderFunction, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { ProductProvider } from "@shopify/storefront-kit-react";
+import { ProductProvider, useProduct } from "@shopify/storefront-kit-react";
 import clsx from "clsx";
 import request from "graphql-request";
+import { useCallback } from "react";
 import invariant from "tiny-invariant";
 
 type ProductType = SerializeFrom<typeof loader>["data_"]["product"];
@@ -24,52 +26,27 @@ const query = graphql(`
           altText
         }
       }
-      options {
-        name
-        values
-      }
-      variants(first: 100) {
-        nodes {
-          id
-          priceV2 {
-            amount
-          }
-          selectedOptions {
-            name
-            value
-          }
-        }
-      }
-    }
-    fragmentedProduct: product(handle: $handle) {
-      ...ProductDataShallowFragment
-      ...ProductDataDeepFragment
+      ...productProviderDataFragment
+      #   variants(first: 100) {
+      #     nodes {
+      #       id
+      #       priceV2 {
+      #         amount
+      #       }
+      #     }
+      #   }
     }
   }
 
-  fragment ProductDataShallowFragment on Product {
-    handle
-    title
-    description
-    images(first: 3) {
-      nodes {
-        id
-        url(transform: null)
-        altText
-      }
-    }
-  }
-
-  fragment ProductDataDeepFragment on Product {
-    handle
-    options {
-      name
-      values
-    }
+  fragment productProviderDataFragment on Product {
     variants(first: 100) {
       nodes {
         id
+        availableForSale
         priceV2 {
+          amount
+        }
+        compareAtPriceV2 {
           amount
         }
         selectedOptions {
@@ -130,22 +107,76 @@ function ProductGallery({ product }: { product: ProductType }) {
   );
 }
 
-export default function Product() {
+function ProductComponent() {
+  const { data_ } = useLoaderData<typeof loader>();
+  const { options, selectedOptions, setSelectedOption, selectedVariant } =
+    useProduct();
+  invariant(options, "Missing options");
+
+  const handleChange = useCallback(
+    (name: string, value: string) => {
+      console.log({ name, value });
+      setSelectedOption(name, value);
+    },
+    [setSelectedOption]
+  );
+
+  return (
+    <div>
+      <form className="grid gap-10">
+        <div className="grid gap-4">
+          {options.map((item) => {
+            if (
+              !item ||
+              !item.name ||
+              !item.values ||
+              item.values.length == 1
+            ) {
+              return null;
+            }
+            return (
+              <div
+                key={item.name}
+                className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
+              >
+                <legend>{item.name}</legend>
+                <div className="flex flex-wrap items-baseline gap-4">
+                  <ProductOptions
+                    name={item.name}
+                    handleChange={handleChange}
+                    values={item.values.filter(
+                      (item): item is string => typeof item === "string"
+                    )}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </form>
+      <pre>{JSON.stringify({ selectedOptions }, null, 2)}</pre>
+      <pre>{JSON.stringify(data_, null, 2)}</pre>
+    </div>
+  );
+}
+
+export default function ProductRouteComponent() {
   const { data_ } = useLoaderData<typeof loader>();
   return (
     <ProductProvider data={data_.product}>
       <Container className="mt-8">
-        <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+        <ProductComponent />
+        {/* <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
           <div className="lg:col-span-5 lg:col-start-8">
             <ProductTitle product={data_.product} />
           </div>
           <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
             <ProductGallery product={data_.product} />
           </div>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <pre>{JSON.stringify(data_, null, 2)}</pre>
-        </div>
+        </div> */}
       </Container>
     </ProductProvider>
   );
