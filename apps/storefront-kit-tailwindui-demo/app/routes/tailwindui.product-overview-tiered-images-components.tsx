@@ -13,7 +13,7 @@
   }
   ```
 */
-import { useState } from "react";
+import React, { useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import {
@@ -192,39 +192,47 @@ export function ProductGallery({
   );
 }
 
-export function RadioGroupSmallCards(props: Parameters<typeof RadioGroup>[0]) {
+export function RadioGroupSmallCards({
+  label,
+  children,
+  ...props
+}: Parameters<typeof RadioGroup>[0] & {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <RadioGroup
-      // value={selectedSize}
-      // onChange={setSelectedSize}
-      // className="mt-2"
-      {...props}
-    >
-      <RadioGroup.Label className="sr-only"> Choose a size </RadioGroup.Label>
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-        {product.sizes.map((size) => (
-          <RadioGroup.Option
-            key={size.name}
-            value={size}
-            className={({ active, checked }) =>
-              classNames(
-                size.inStock
-                  ? "cursor-pointer focus:outline-none"
-                  : "opacity-25 cursor-not-allowed",
-                active ? "ring-2 ring-offset-2 ring-indigo-500" : "",
-                checked
-                  ? "bg-indigo-600 border-transparent text-white hover:bg-indigo-700"
-                  : "bg-white border-gray-200 text-gray-900 hover:bg-gray-50",
-                "border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1"
-              )
-            }
-            disabled={!size.inStock}
-          >
-            <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
-          </RadioGroup.Option>
-        ))}
-      </div>
+    <RadioGroup {...props}>
+      <RadioGroup.Label className="sr-only">{label}</RadioGroup.Label>
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">{children}</div>
     </RadioGroup>
+  );
+}
+
+export function RadioGroupSmallCardsOption({
+  name,
+  value,
+  disabled,
+}: Parameters<typeof RadioGroup.Option>[0]) {
+  return (
+    <RadioGroup.Option
+      // key={name}
+      value={value}
+      className={({ active, checked }) =>
+        classNames(
+          disabled
+            ? "opacity-25 cursor-not-allowed"
+            : "cursor-pointer focus:outline-none",
+          active ? "ring-2 ring-offset-2 ring-indigo-500" : "",
+          checked
+            ? "bg-indigo-600 border-transparent text-white hover:bg-indigo-700"
+            : "bg-white border-gray-200 text-gray-900 hover:bg-gray-50",
+          "border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1"
+        )
+      }
+      disabled={disabled}
+    >
+      <RadioGroup.Label as="span">{name}</RadioGroup.Label>
+    </RadioGroup.Option>
   );
 }
 
@@ -291,10 +299,20 @@ export function ProductForm({ productData }: { productData: typeof product }) {
         </div>
 
         <RadioGroupSmallCards
+          label="Choose a size"
           value={selectedSize}
           onChange={setSelectedSize}
           className="mt-2"
-        />
+        >
+          {product.sizes.map((size) => (
+            <RadioGroupSmallCardsOption
+              key={size.name}
+              name={size.name}
+              value={size}
+              disabled={!size.inStock}
+            />
+          ))}
+        </RadioGroupSmallCards>
 
         <RadioGroup
           value={selectedSize}
