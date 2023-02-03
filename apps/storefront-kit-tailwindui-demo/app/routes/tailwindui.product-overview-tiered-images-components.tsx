@@ -192,29 +192,17 @@ export function ProductGallery({
   );
 }
 
-export function RadioGroupSmallCards({
-  label,
+export function RadioGroupOptionSmallCard({
+  value,
+  disabled,
   children,
   ...props
-}: Parameters<typeof RadioGroup>[0] & {
-  label: string;
+}: Omit<Parameters<typeof RadioGroup.Option>[0], "className"> & {
   children: React.ReactNode;
 }) {
   return (
-    <RadioGroup {...props}>
-      <RadioGroup.Label className="sr-only">{label}</RadioGroup.Label>
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">{children}</div>
-    </RadioGroup>
-  );
-}
-
-RadioGroupSmallCards.Option = function RadioGroupSmallCardsOption({
-  name,
-  value,
-  disabled,
-}: Parameters<typeof RadioGroup.Option>[0]) {
-  return (
     <RadioGroup.Option
+      {...props}
       value={value}
       className={({ active, checked }) =>
         classNames(
@@ -230,10 +218,10 @@ RadioGroupSmallCards.Option = function RadioGroupSmallCardsOption({
       }
       disabled={disabled}
     >
-      <RadioGroup.Label as="span">{name}</RadioGroup.Label>
+      {children}
     </RadioGroup.Option>
   );
-};
+}
 
 export function ProductForm({ productData }: { productData: typeof product }) {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
@@ -296,22 +284,24 @@ export function ProductForm({ productData }: { productData: typeof product }) {
             See sizing chart
           </a>
         </div>
-
-        <RadioGroupSmallCards
-          label="Choose a size"
+        <RadioGroup
           value={selectedSize}
           onChange={setSelectedSize}
           className="mt-2"
         >
-          {product.sizes.map((size) => (
-            <RadioGroupSmallCards.Option
-              key={size.name}
-              name={size.name}
-              value={size}
-              disabled={!size.inStock}
-            />
-          ))}
-        </RadioGroupSmallCards>
+          <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+            {product.sizes.map((size) => (
+              <RadioGroupOptionSmallCard
+                key={size.name}
+                value={size}
+                disabled={!size.inStock}
+              >
+                <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
+              </RadioGroupOptionSmallCard>
+            ))}
+          </div>
+        </RadioGroup>
       </div>
 
       <button
