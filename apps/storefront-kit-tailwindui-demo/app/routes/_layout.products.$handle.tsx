@@ -110,6 +110,10 @@ function ProductGallery({ product }: { product: ProductType }) {
   );
 }
 
+// https://tailwindui.com/components/application-ui/forms/select-menus
+// Simple custom
+
+
 function ProductOptionRadioGroup({
   value,
   option,
@@ -179,12 +183,16 @@ function ProductComponent() {
                     {item.name}
                   </h2>
                 </div>
-                <ProductOptionRadioGroup
-                  value={value}
-                  className="mt-2"
-                  option={item as OptionWithValues}
-                  onChange={onChange}
-                />
+                {item.values.length < 7 ? (
+                  <ProductOptionRadioGroup
+                    value={value}
+                    className="mt-2"
+                    option={item as OptionWithValues}
+                    onChange={onChange}
+                  />
+                ) : (
+                  "Drop down"
+                )}
               </div>
             );
           })}
