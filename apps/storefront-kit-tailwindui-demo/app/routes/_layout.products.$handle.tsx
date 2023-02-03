@@ -143,10 +143,8 @@ function ProductOptionRadioGroup({
   );
 }
 
-function ProductComponent() {
-  const { data_ } = useLoaderData<typeof loader>();
-  const { options, selectedOptions, setSelectedOption, selectedVariant } =
-    useProduct();
+function ProductForm() {
+  const { options, selectedOptions, setSelectedOption } = useProduct();
   invariant(options, "Missing options");
 
   const handleChange = useCallback(
@@ -192,6 +190,7 @@ function ProductComponent() {
                     value={value}
                     displayValue={value}
                     label=""
+                    onChange={onChange}
                   >
                     {item.values
                       .filter((v): v is string => typeof v === "string")
@@ -206,38 +205,8 @@ function ProductComponent() {
             );
           })}
         </div>
-        <div className="grid gap-4">
-          {options.map((item) => {
-            if (
-              !item ||
-              !item.name ||
-              !item.values ||
-              item.values.length == 1
-            ) {
-              return null;
-            }
-            return (
-              <div
-                key={item.name}
-                className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
-              >
-                <legend>{item.name}</legend>
-                <div className="flex flex-wrap items-baseline gap-4">
-                  <ProductOptions
-                    name={item.name}
-                    handleChange={handleChange}
-                    values={item.values.filter(
-                      (item): item is string => typeof item === "string"
-                    )}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
       </form>
       <pre>{JSON.stringify({ selectedOptions }, null, 2)}</pre>
-      <pre>{JSON.stringify(data_, null, 2)}</pre>
     </div>
   );
 }
@@ -247,15 +216,17 @@ export default function ProductRouteComponent() {
   return (
     <ProductProvider data={data_.product}>
       <Container className="mt-8">
-        <ProductComponent />
-        {/* <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
+        <div className="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
           <div className="lg:col-span-5 lg:col-start-8">
             <ProductTitle product={data_.product} />
           </div>
           <div className="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
             <ProductGallery product={data_.product} />
           </div>
-        </div> */}
+          <div className="mt-8 lg:col-span-5">
+            <ProductForm />
+          </div>
+        </div>
         {/* <div>
           <pre>{JSON.stringify(data_, null, 2)}</pre>
         </div> */}
