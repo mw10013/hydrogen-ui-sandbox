@@ -12,6 +12,7 @@ import clsx from "clsx";
 import request from "graphql-request";
 import { useCallback } from "react";
 import invariant from "tiny-invariant";
+import { OptionWithValues } from "@shopify/storefront-kit-react/dist/types/ProductProvider";
 
 type ProductType = SerializeFrom<typeof loader>["data_"]["product"];
 
@@ -109,31 +110,35 @@ function ProductGallery({ product }: { product: ProductType }) {
   );
 }
 
-function RadiGroupOptionSmallCard({
+function ProductOptionRadioGroup({
   value,
-  disabled,
-  children,
-}: Parameters<typeof RadioGroup.Option>[0]) {
+  option,
+  ...props
+}: Parameters<typeof RadioGroup>[0] & { option: OptionWithValues }) {
   return (
-    <RadioGroup.Option
+    <RadioGroup
+      {...props}
       value={value}
-      className={({ active, checked }) =>
-        clsx(
-          disabled
-            ? "opacity-25 cursor-not-allowed"
-            : "cursor-pointer focus:outline-none",
-          active ? "ring-2 ring-offset-2 ring-indigo-500" : "",
-          checked
-            ? "bg-indigo-600 border-transparent text-white hover:bg-indigo-700"
-            : "bg-white border-gray-200 text-gray-900 hover:bg-gray-50",
-          "border rounded-md py-3 px-3 flex items-center justify-center text-sm font-medium uppercase sm:flex-1"
-        )
-      }
-      disabled={disabled}
+      // onChange={(v: string) => setSelectedOption(item.name || "", v)}
+      // className="mt-2"
     >
-      {children}
-      {/* <RadioGroup.Label as="span">{name}</RadioGroup.Label> */}
-    </RadioGroup.Option>
+      <RadioGroup.Label className="sr-only">
+        {`Choose ${option.name}`}
+      </RadioGroup.Label>
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+        {option.values
+          .filter((v): v is string => typeof v === "string")
+          .map((v) => (
+            <RadioGroupOptionSmallCard
+              key={v}
+              value={v}
+              //   disabled={!size.inStock}
+            >
+              <RadioGroup.Label as="span">{v}</RadioGroup.Label>
+            </RadioGroupOptionSmallCard>
+          ))}
+      </div>
+    </RadioGroup>
   );
 }
 
@@ -164,6 +169,9 @@ function ProductComponent() {
             ) {
               return null;
             }
+            const value = selectedOptions ? selectedOptions[item.name] : "";
+            const onChange = (v: string) =>
+              setSelectedOption(item.name || "", v);
             return (
               <div key={item.name} className="mt-8">
                 <div className="flex items-center justify-between">
@@ -171,30 +179,12 @@ function ProductComponent() {
                     {item.name}
                   </h2>
                 </div>
-                <RadioGroup
-                  value={selectedOptions ? selectedOptions[item.name] : ""}
-                  onChange={(v: string) =>
-                    setSelectedOption(item.name || "", v)
-                  }
+                <ProductOptionRadioGroup
+                  value={value}
                   className="mt-2"
-                >
-                  <RadioGroup.Label className="sr-only">
-                    {`Choose ${item.name}`}
-                  </RadioGroup.Label>
-                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                    {item.values
-                      .filter((v): v is string => typeof v === "string")
-                      .map((v) => (
-                        <RadioGroupOptionSmallCard
-                          key={v}
-                          value={v}
-                          //   disabled={!size.inStock}
-                        >
-                          <RadioGroup.Label as="span">{v}</RadioGroup.Label>
-                        </RadioGroupOptionSmallCard>
-                      ))}
-                  </div>
-                </RadioGroup>
+                  option={item as OptionWithValues}
+                  onChange={onChange}
+                />
               </div>
             );
           })}
