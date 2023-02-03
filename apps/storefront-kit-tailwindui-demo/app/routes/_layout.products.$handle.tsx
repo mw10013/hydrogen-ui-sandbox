@@ -1,6 +1,5 @@
 import { Container } from "@/components/Container";
-import { RadioGroupOptionSmallCard } from "@/components/elements/RadioGroupOptionSmallCard";
-import { RadioGroupSmallCards } from "@/components/elements/RadioGroupSmallCards";
+import { RadioGroupOptionSmallCard } from "@/components/RadioGroupOptionSmallCard";
 import { ProductOptions } from "@/components/product/ProductOptions";
 import { graphql } from "@/lib/gql";
 import { shopClient } from "@/lib/utils";
