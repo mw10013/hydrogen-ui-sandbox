@@ -1,4 +1,5 @@
 import { Container } from "@/components/Container";
+import { RadioGroupSmallCards } from "@/components/elements/RadioGroupSmallCards";
 import { ProductOptions } from "@/components/product/ProductOptions";
 import { graphql } from "@/lib/gql";
 import { shopClient } from "@/lib/utils";
@@ -124,6 +125,50 @@ function ProductComponent() {
   return (
     <div>
       <form className="grid gap-10">
+        <div className="grid gap-4">
+          {options.map((item) => {
+            if (
+              !item ||
+              !item.name ||
+              !item.values ||
+              item.values.length == 1
+            ) {
+              return null;
+            }
+            return (
+              <div
+                key={item.name}
+                className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
+              >
+                <legend>{item.name}</legend>
+                <div className="flex flex-wrap items-baseline gap-4">
+                  <RadioGroupSmallCards
+                    label={`Choose ${item.name}`}
+                    value={selectedOptions ? selectedOptions[item.name] : ""}
+                  >
+                    {item.values
+                      .filter((v): v is string => typeof v === "string")
+                      .map((v) => (
+                        <RadioGroupSmallCards.Option
+                          key={v}
+                          name={v}
+                          value={v}
+                          //   disabled={!size.inStock}
+                        />
+                      ))}
+                  </RadioGroupSmallCards>
+                  <ProductOptions
+                    name={item.name}
+                    handleChange={handleChange}
+                    values={item.values.filter(
+                      (item): item is string => typeof item === "string"
+                    )}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
         <div className="grid gap-4">
           {options.map((item) => {
             if (
