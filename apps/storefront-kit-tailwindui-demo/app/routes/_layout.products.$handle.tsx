@@ -13,6 +13,7 @@ import request from "graphql-request";
 import { useCallback } from "react";
 import invariant from "tiny-invariant";
 import { OptionWithValues } from "@shopify/storefront-kit-react/dist/types/ProductProvider";
+import { SelectMenuSimpleCustom } from "@/components/SelectMenuSimpleCustom";
 
 type ProductType = SerializeFrom<typeof loader>["data_"]["product"];
 
@@ -110,10 +111,6 @@ function ProductGallery({ product }: { product: ProductType }) {
   );
 }
 
-// https://tailwindui.com/components/application-ui/forms/select-menus
-// Simple custom
-
-
 function ProductOptionRadioGroup({
   value,
   option,
@@ -191,7 +188,19 @@ function ProductComponent() {
                     onChange={onChange}
                   />
                 ) : (
-                  "Drop down"
+                  <SelectMenuSimpleCustom
+                    value={value}
+                    displayValue={value}
+                    label=""
+                  >
+                    {item.values
+                      .filter((v): v is string => typeof v === "string")
+                      .map((v) => (
+                        <SelectMenuSimpleCustom.Option key={v} value={v}>
+                          {v}
+                        </SelectMenuSimpleCustom.Option>
+                      ))}
+                  </SelectMenuSimpleCustom>
                 )}
               </div>
             );
