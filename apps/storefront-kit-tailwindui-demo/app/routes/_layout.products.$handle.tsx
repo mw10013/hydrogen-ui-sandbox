@@ -145,6 +145,7 @@ function ProductComponent() {
                   <RadioGroupSmallCards
                     label={`Choose ${item.name}`}
                     value={selectedOptions ? selectedOptions[item.name] : ""}
+                    onChange={(v: string) => setSelectedOption(item.name || "", v)}
                   >
                     {item.values
                       .filter((v): v is string => typeof v === "string")
@@ -157,13 +158,6 @@ function ProductComponent() {
                         />
                       ))}
                   </RadioGroupSmallCards>
-                  <ProductOptions
-                    name={item.name}
-                    handleChange={handleChange}
-                    values={item.values.filter(
-                      (item): item is string => typeof item === "string"
-                    )}
-                  />
                 </div>
               </div>
             );
