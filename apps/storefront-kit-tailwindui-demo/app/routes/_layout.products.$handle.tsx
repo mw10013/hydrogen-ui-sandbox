@@ -1,4 +1,5 @@
 import { Container } from "@/components/Container";
+import { RadioGroupOptionSmallCard } from "@/components/elements/RadioGroupOptionSmallCard";
 import { RadioGroupSmallCards } from "@/components/elements/RadioGroupSmallCards";
 import { ProductOptions } from "@/components/product/ProductOptions";
 import { graphql } from "@/lib/gql";
@@ -153,8 +154,8 @@ function ProductComponent() {
 
   return (
     <div>
-      <form className="grid gap-10">
-        <div className="grid gap-4">
+      <form>
+        <div className="">
           {options.map((item) => {
             if (
               !item ||
@@ -165,31 +166,36 @@ function ProductComponent() {
               return null;
             }
             return (
-              <div
-                key={item.name}
-                className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
-              >
-                <legend>{item.name}</legend>
-                <div className="flex flex-wrap items-baseline gap-4">
-                  <RadioGroupSmallCards
-                    label={`Choose ${item.name}`}
-                    value={selectedOptions ? selectedOptions[item.name] : ""}
-                    onChange={(v: string) =>
-                      setSelectedOption(item.name || "", v)
-                    }
-                  >
+              <div key={item.name} className="mt-8">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-sm font-medium text-gray-900">
+                    {item.name}
+                  </h2>
+                </div>
+                <RadioGroup
+                  value={selectedOptions ? selectedOptions[item.name] : ""}
+                  onChange={(v: string) =>
+                    setSelectedOption(item.name || "", v)
+                  }
+                  className="mt-2"
+                >
+                  <RadioGroup.Label className="sr-only">
+                    {`Choose ${item.name}`}
+                  </RadioGroup.Label>
+                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
                     {item.values
                       .filter((v): v is string => typeof v === "string")
                       .map((v) => (
-                        <RadioGroupSmallCards.Option
+                        <RadioGroupOptionSmallCard
                           key={v}
-                          name={v}
                           value={v}
                           //   disabled={!size.inStock}
-                        />
+                        >
+                          <RadioGroup.Label as="span">{v}</RadioGroup.Label>
+                        </RadioGroupOptionSmallCard>
                       ))}
-                  </RadioGroupSmallCards>
-                </div>
+                  </div>
+                </RadioGroup>
               </div>
             );
           })}
