@@ -1,5 +1,6 @@
 import { RadioGroup } from "@headlessui/react";
 import clsx from "clsx";
+import React from "react";
 
 function RadioGroupSmallCards({
   label,
@@ -15,6 +16,12 @@ function RadioGroupSmallCards({
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">{children}</div>
     </RadioGroup>
   );
+}
+
+RadioGroupSmallCards.SrLabel = function RadioGroupSmallCardSrLabel({children}: {children: React.ReactNode}) {
+    return (
+        <RadioGroup.Label className="sr-only">{children}</RadioGroup.Label>
+    )
 }
 
 RadioGroupSmallCards.Option = function RadioGroupSmallCardsOption({
