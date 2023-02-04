@@ -1,9 +1,5 @@
 import { Container } from "@/components/Container";
-import {
-  RadioGroupOptionSmallCard,
-  RadioGroupSmallCards,
-} from "@/components/RadioGroupSmallCards";
-import { ProductOptions } from "@/components/product/ProductOptions";
+import { RadioGroupSmallCards } from "@/components/RadioGroupSmallCards";
 import { graphql } from "@/lib/gql";
 import { shopClient } from "@/lib/utils";
 import { RadioGroup } from "@headlessui/react";
@@ -13,9 +9,7 @@ import { useLoaderData } from "@remix-run/react";
 import { ProductProvider, useProduct } from "@shopify/storefront-kit-react";
 import clsx from "clsx";
 import request from "graphql-request";
-import { useCallback } from "react";
 import invariant from "tiny-invariant";
-import { OptionWithValues } from "@shopify/storefront-kit-react/dist/types/ProductProvider";
 import { SelectMenuSimpleCustom } from "@/components/SelectMenuSimpleCustom";
 
 type ProductType = SerializeFrom<typeof loader>["data_"]["product"];
@@ -119,71 +113,63 @@ function ProductForm() {
   invariant(options, "Missing options");
 
   return (
-    <div>
-      <form>
-        <div className="">
-          {options.map((item) => {
-            if (
-              !item ||
-              !item.name ||
-              !item.values ||
-              item.values.length == 1
-            ) {
-              return null;
-            }
-            const value = selectedOptions ? selectedOptions[item.name] : "";
-            const onChange = (v: string) =>
-              setSelectedOption(item.name || "", v);
-            return (
-              <div key={item.name} className="mt-8">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-sm font-medium text-gray-900">
-                    {item.name}
-                  </h2>
-                </div>
-                {item.values.length < 7 ? (
-                  <RadioGroupSmallCards
-                    value={value}
-                    className="mt-2"
-                    srLabel={`Choose ${item.name}`}
-                    onChange={onChange}
-                  >
-                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                      {item.values
-                        .filter((v): v is string => typeof v === "string")
-                        .map((v) => (
-                          <RadioGroupOptionSmallCard
-                            key={v}
-                            value={v}
-                            //   disabled={!size.inStock}
-                          >
-                            <RadioGroup.Label as="span">{v}</RadioGroup.Label>
-                          </RadioGroupOptionSmallCard>
-                        ))}
-                    </div>
-                  </RadioGroupSmallCards>
-                ) : (
-                  <SelectMenuSimpleCustom
-                    value={value}
-                    displayValue={value}
-                    onChange={onChange}
-                  >
+    <form>
+      <div className="">
+        {options.map((item) => {
+          if (!item || !item.name || !item.values || item.values.length == 1) {
+            return null;
+          }
+          const value = selectedOptions ? selectedOptions[item.name] : "";
+          const onChange = (v: string) => setSelectedOption(item.name || "", v);
+          return (
+            <div key={item.name} className="mt-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-medium text-gray-900">
+                  {item.name}
+                </h2>
+              </div>
+              {item.values.length < 7 ? (
+                <RadioGroupSmallCards
+                  value={value}
+                  className="mt-2"
+                  srLabel={`Choose ${item.name}`}
+                  onChange={onChange}
+                >
+                  {/* <div className="grid grid-cols-3 gap-3 sm:grid-cols-6"> */}
+                  <div className="flex flex-wrap gap-3">
                     {item.values
                       .filter((v): v is string => typeof v === "string")
                       .map((v) => (
-                        <SelectMenuSimpleCustom.Option key={v} value={v}>
-                          {v}
-                        </SelectMenuSimpleCustom.Option>
+                        <RadioGroupSmallCards.Option
+                          key={v}
+                          value={v}
+                          //   disabled={!size.inStock}
+                        >
+                          <RadioGroup.Label as="span">{v}</RadioGroup.Label>
+                        </RadioGroupSmallCards.Option>
                       ))}
-                  </SelectMenuSimpleCustom>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </form>
-      <pre>{JSON.stringify({ selectedOptions }, null, 2)}</pre>
-    </div>
+                  </div>
+                </RadioGroupSmallCards>
+              ) : (
+                <SelectMenuSimpleCustom
+                  value={value}
+                  displayValue={value}
+                  onChange={onChange}
+                >
+                  {item.values
+                    .filter((v): v is string => typeof v === "string")
+                    .map((v) => (
+                      <SelectMenuSimpleCustom.Option key={v} value={v}>
+                        {v}
+                      </SelectMenuSimpleCustom.Option>
+                    ))}
+                </SelectMenuSimpleCustom>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </form>
   );
 }
 
