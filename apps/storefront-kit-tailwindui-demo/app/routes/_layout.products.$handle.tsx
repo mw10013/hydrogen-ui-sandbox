@@ -189,7 +189,6 @@ function ProductForm() {
                   <SelectMenuSimpleCustom
                     value={value}
                     displayValue={value}
-                    label=""
                     onChange={onChange}
                   >
                     {item.values
