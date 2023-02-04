@@ -1,5 +1,8 @@
 import { Container } from "@/components/Container";
-import { RadioGroupOptionSmallCard } from "@/components/RadioGroupOptionSmallCard";
+import {
+  RadioGroupOptionSmallCard,
+  RadioGroupSmallCards,
+} from "@/components/RadioGroupSmallCards";
 import { ProductOptions } from "@/components/product/ProductOptions";
 import { graphql } from "@/lib/gql";
 import { shopClient } from "@/lib/utils";
@@ -111,49 +114,9 @@ function ProductGallery({ product }: { product: ProductType }) {
   );
 }
 
-function ProductOptionRadioGroup({
-  value,
-  option,
-  ...props
-}: Parameters<typeof RadioGroup>[0] & { option: OptionWithValues }) {
-  return (
-    <RadioGroup
-      {...props}
-      value={value}
-      // onChange={(v: string) => setSelectedOption(item.name || "", v)}
-      // className="mt-2"
-    >
-      <RadioGroup.Label className="sr-only">
-        {`Choose ${option.name}`}
-      </RadioGroup.Label>
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-        {option.values
-          .filter((v): v is string => typeof v === "string")
-          .map((v) => (
-            <RadioGroupOptionSmallCard
-              key={v}
-              value={v}
-              //   disabled={!size.inStock}
-            >
-              <RadioGroup.Label as="span">{v}</RadioGroup.Label>
-            </RadioGroupOptionSmallCard>
-          ))}
-      </div>
-    </RadioGroup>
-  );
-}
-
 function ProductForm() {
   const { options, selectedOptions, setSelectedOption } = useProduct();
   invariant(options, "Missing options");
-
-  const handleChange = useCallback(
-    (name: string, value: string) => {
-      console.log({ name, value });
-      setSelectedOption(name, value);
-    },
-    [setSelectedOption]
-  );
 
   return (
     <div>
@@ -179,12 +142,26 @@ function ProductForm() {
                   </h2>
                 </div>
                 {item.values.length < 7 ? (
-                  <ProductOptionRadioGroup
+                  <RadioGroupSmallCards
                     value={value}
                     className="mt-2"
-                    option={item as OptionWithValues}
+                    srLabel={`Choose ${item.name}`}
                     onChange={onChange}
-                  />
+                  >
+                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
+                      {item.values
+                        .filter((v): v is string => typeof v === "string")
+                        .map((v) => (
+                          <RadioGroupOptionSmallCard
+                            key={v}
+                            value={v}
+                            //   disabled={!size.inStock}
+                          >
+                            <RadioGroup.Label as="span">{v}</RadioGroup.Label>
+                          </RadioGroupOptionSmallCard>
+                        ))}
+                    </div>
+                  </RadioGroupSmallCards>
                 ) : (
                   <SelectMenuSimpleCustom
                     value={value}

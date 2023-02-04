@@ -3,7 +3,25 @@ import clsx from "clsx";
 
 // https://tailwindui.com/components/application-ui/forms/radio-groups
 // Small Card
-export function RadioGroupOptionSmallCard({
+
+export function RadioGroupSmallCards({
+  value,
+  srLabel,
+  children,
+  ...props
+}: Parameters<typeof RadioGroup>[0] & {
+  srLabel: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <RadioGroup {...props} value={value}>
+      <RadioGroup.Label className="sr-only">{srLabel}</RadioGroup.Label>
+      {children}
+    </RadioGroup>
+  );
+}
+
+RadioGroupSmallCards.Option = function RadioGroupSmallCardsOption({
   value,
   disabled,
   children,
@@ -32,4 +50,4 @@ export function RadioGroupOptionSmallCard({
       {children}
     </RadioGroup.Option>
   );
-}
+};
