@@ -10,6 +10,7 @@ import {
   AddToCartButton,
   Money,
   ProductProvider,
+  ShopPayButton,
   useProduct,
 } from "@shopify/storefront-kit-react";
 import clsx from "clsx";
@@ -192,11 +193,6 @@ function ProductForm() {
           disabled={isOutOfStock}
           type="button"
         >
-          {/* <Button
-            width="full"
-            variant={isOutOfStock ? "secondary" : "primary"}
-            as="span"
-          > */}
           {isOutOfStock ? (
             <span>Sold out</span>
           ) : (
@@ -218,6 +214,12 @@ function ProductForm() {
             </span>
           )}
         </AddToCartButton>
+        {!isOutOfStock && (
+          <ShopPayButton
+            className="mt-4"
+            variantIds={[selectedVariant.id!]}
+          />
+        )}
       </div>
     </form>
   );
