@@ -6,7 +6,12 @@ import { RadioGroup } from "@headlessui/react";
 import type { LoaderFunction, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { ProductProvider, useProduct } from "@shopify/storefront-kit-react";
+import {
+  AddToCartButton,
+  Money,
+  ProductProvider,
+  useProduct,
+} from "@shopify/storefront-kit-react";
 import clsx from "clsx";
 import request from "graphql-request";
 import invariant from "tiny-invariant";
@@ -46,9 +51,11 @@ const query = graphql(`
         availableForSale
         priceV2 {
           amount
+          currencyCode
         }
         compareAtPriceV2 {
           amount
+          currencyCode
         }
         selectedOptions {
           name
@@ -81,7 +88,7 @@ function ProductTitle({ product }: { product: ProductType }) {
   return (
     <div className="flex justify-between">
       <h1 className="text-xl font-medium text-gray-900">{product.title}</h1>
-      <p className="text-xl font-medium text-gray-900">Price</p>
+      {/* <p className="text-xl font-medium text-gray-900">Price</p> */}
     </div>
   );
 }
@@ -109,8 +116,17 @@ function ProductGallery({ product }: { product: ProductType }) {
 }
 
 function ProductForm() {
-  const { options, selectedOptions, setSelectedOption } = useProduct();
+  const { options, selectedOptions, setSelectedOption, selectedVariant } =
+    useProduct();
   invariant(options, "Missing options");
+
+  const isOutOfStock = !selectedVariant?.availableForSale || false;
+  const isOnSale =
+    selectedVariant?.priceV2?.amount &&
+    selectedVariant?.compareAtPriceV2?.amount
+      ? selectedVariant?.priceV2?.amount <
+        selectedVariant?.compareAtPriceV2?.amount
+      : false;
 
   return (
     <form>
@@ -168,6 +184,40 @@ function ProductForm() {
             </div>
           );
         })}
+        <AddToCartButton
+          className="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          variantId={selectedVariant?.id}
+          quantity={1}
+          accessibleAddingToCartLabel="Adding item to your cart"
+          disabled={isOutOfStock}
+          type="button"
+        >
+          {/* <Button
+            width="full"
+            variant={isOutOfStock ? "secondary" : "primary"}
+            as="span"
+          > */}
+          {isOutOfStock ? (
+            <span>Sold out</span>
+          ) : (
+            <span className="flex items-center justify-center gap-2">
+              <span>Add to bag</span> <span>·</span>{" "}
+              <Money
+                withoutTrailingZeros
+                data={selectedVariant.priceV2!}
+                as="span"
+              />
+              {isOnSale && (
+                <Money
+                  withoutTrailingZeros
+                  data={selectedVariant.compareAtPriceV2!}
+                  as="span"
+                  className="opacity-50 line-through"
+                />
+              )}
+            </span>
+          )}
+        </AddToCartButton>
       </div>
     </form>
   );
