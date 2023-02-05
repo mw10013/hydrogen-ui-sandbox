@@ -8,6 +8,7 @@ import { Popover, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment } from "react";
 import { Link } from "@remix-run/react";
+import { useCart } from "@shopify/storefront-kit-react";
 
 export const navigation = {
   categories: [
@@ -140,6 +141,7 @@ export const navigation = {
 };
 
 export function Navigation({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const { totalQuantity } = useCart();
   return (
     <nav
       aria-label="Top"
@@ -196,7 +198,10 @@ export function Navigation({ setOpen }: { setOpen: (open: boolean) => void }) {
 
             {/* Search */}
             <div className="flex lg:ml-8">
-              <a href="/search" className="p-2 text-gray-400 hover:text-gray-500">
+              <a
+                href="/search"
+                className="p-2 text-gray-400 hover:text-gray-500"
+              >
                 <span className="sr-only">Search</span>
                 <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
               </a>
@@ -204,16 +209,16 @@ export function Navigation({ setOpen }: { setOpen: (open: boolean) => void }) {
 
             {/* Cart */}
             <div className="ml-4 flow-root lg:ml-6">
-              <a href="#" className="group -m-2 flex items-center p-2">
+              <Link to="#" className="group -m-2 flex items-center p-2">
                 <ShoppingBagIcon
                   className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                   aria-hidden="true"
                 />
                 <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                  0
+                  {totalQuantity}
                 </span>
                 <span className="sr-only">items in cart, view bag</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
