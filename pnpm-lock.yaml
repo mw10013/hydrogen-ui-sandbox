@@ -191,6 +191,7 @@ importers:
 
   apps/storefront-kit-tailwindui-demo:
     specifiers:
+      '@faker-js/faker': ^7.6.0
       '@graphql-codegen/cli': ^2.16.2
       '@graphql-codegen/client-preset': ^1.2.4
       '@graphql-typed-document-node/core': ^3.1.1
@@ -252,6 +253,7 @@ importers:
       tiny-invariant: 1.3.1
       zod: 3.20.2
     devDependencies:
+      '@faker-js/faker': 7.6.0
       '@graphql-codegen/cli': 2.16.4_xcqthgbenw3hhig2jxkpzsllxu
       '@graphql-codegen/client-preset': 1.2.6_graphql@16.6.0
       '@playwright/test': 1.29.2

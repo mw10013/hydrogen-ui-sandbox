@@ -41,6 +41,7 @@
     "zod": "3.20.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@graphql-codegen/cli": "^2.16.2",
     "@graphql-codegen/client-preset": "^1.2.4",
     "@playwright/test": "^1.29.2",

@@ -2,6 +2,7 @@ import { Navigation, navigation } from "@/components/Navigation";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "@remix-run/react";
+import { useCart } from "@shopify/storefront-kit-react";
 import React, { Fragment } from "react";
 
 const products = [
@@ -225,6 +226,7 @@ function MobileMenu({
 export function Header() {
   const [cartOpen, setCartOpen] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  useCart();
   return (
     <>
       <Cart title="Shopping cart" open={cartOpen} setOpen={setCartOpen}>
