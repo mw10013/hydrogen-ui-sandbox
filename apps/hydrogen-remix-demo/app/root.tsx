@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import { CartProvider, ShopifyProvider } from "@shopify/storefront-kit-react";
+import { CartProvider, ShopifyProvider } from "@shopify/hydrogen-react";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
 // export type ContextType = {};
@@ -50,12 +50,11 @@ export default function App() {
       </head>
       <body className="antialiased font-sans bg-gray-200 overflow-hidden-">
         <ShopifyProvider
-          shopifyConfig={{
-            storeDomain: `https://hydrogen-preview.myshopify.com`,
-            storefrontToken: "3b580e70970c4528da70c98e097c2fa0",
-            storefrontApiVersion: "2023-01",
-            locale: "EN-US",
-          }}
+          storeDomain="https://hydrogen-preview.myshopify.com"
+          storefrontToken="3b580e70970c4528da70c98e097c2fa0"
+          storefrontApiVersion="2023-01"
+          countryIsoCode="US"
+          languageIsoCode="EN"
         >
           <CartProvider>
             <Outlet />

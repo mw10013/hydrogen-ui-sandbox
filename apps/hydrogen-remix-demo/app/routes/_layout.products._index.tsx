@@ -4,7 +4,7 @@ import { shopClient } from "@/lib/utils";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { Money } from "@shopify/storefront-kit-react";
+import { Money } from "@shopify/hydrogen-react";
 import request from "graphql-request";
 
 const FIRST = 6;

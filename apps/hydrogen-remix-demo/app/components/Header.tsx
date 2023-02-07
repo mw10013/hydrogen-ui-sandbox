@@ -2,7 +2,7 @@ import { Navigation, navigation } from "@/components/Navigation";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "@remix-run/react";
-import { useCart } from "@shopify/storefront-kit-react";
+import { useCart } from "@shopify/hydrogen-react";
 import React, { Fragment } from "react";
 import { faker } from "@faker-js/faker";
 import _ from "lodash";

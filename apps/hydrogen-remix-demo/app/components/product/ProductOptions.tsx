@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { Text } from "@/components/elements/Text";
 import { IconCaret, IconCheck } from "@/components/elements/Icon";
-import { useProduct } from "@shopify/storefront-kit-react";
+import { useProduct } from "@shopify/hydrogen-react";
 
 export function ProductOptions({
   values,
@@ -38,7 +38,7 @@ function OptionsGrid({
         const id = `option-${name}-${value}`;
 
         if (checked) {
-            console.log({checked: value})
+          console.log({ checked: value });
         }
 
         return (

@@ -1,8 +1,8 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
-import { storefrontApiCustomScalars } from "@shopify/storefront-kit-react";
+import { storefrontApiCustomScalars } from "@shopify/hydrogen-react";
 
 const config: CodegenConfig = {
-  schema: "./node_modules/@shopify/storefront-kit-react/storefront.schema.json",
+  schema: "./node_modules/@shopify/hydrogen-react/storefront.schema.json",
   documents: ["app/**/!(*.d).{ts,tsx}", "!app/lib/gql/**/*"],
   ignoreNoDocuments: true,
   generates: {

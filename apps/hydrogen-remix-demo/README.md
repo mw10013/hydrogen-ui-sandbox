@@ -1,4 +1,4 @@
-# Storefront Kit TailwindUI Demo
+# Hydrogen React Remix Demo
 
 ## Graphql
 
@@ -23,34 +23,13 @@
 
 - .eslintrc.js: prettier
 - package.json: prettier, eslintIgnore
-- pnpm add -D prettier prettier-plugin-tailwindcss eslint-config-prettier
 - .gitignore: tailwind
-- pnpm add -D @types/node
-- pnpm add -D tailwindcss
 - pnpm exec tailwindcss init
 - tailwind.congif.js
 - root.tsx: import tailwindStylesheetUrl from "./styles/tailwind.css";
-- pnpm add -D npm-run-all
-- pnpm add -D @tailwindcss/forms
 - tailwind.config.js plugins: require('@tailwindcss/forms')
-- pnpm add -D @tailwindcss/typography
 - tailwind.config.js plugins: require('@tailwindcss/typography')
-- pnpm add @headlessui/react
-- pnpm add @heroicons/react
-- pnpm add zod
-- pnpm add clsx
-- pnpm add remeda
-- pnpm add tiny-invariant
 - pnpm dlx create-playwright
-- pnpm add -D vitest
-- pnpm add -D @vitejs/plugin-react
-- pnpm add -D jsdom @testing-library/react
-- pnpm add -D @testing-library/jest-dom
-- pnpm add -D @types/testing-library\_\_jest-dom
-- pnpm add -D @testing-library/user-event ???
-- pnpm add -D react-router
-- pnpm add -D dotenv
-- pnpm add -D @faker-js/faker
 
 ## Vitest
 

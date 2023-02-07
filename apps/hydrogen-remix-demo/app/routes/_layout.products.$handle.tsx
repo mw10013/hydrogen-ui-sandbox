@@ -12,7 +12,7 @@ import {
   ProductProvider,
   ShopPayButton,
   useProduct,
-} from "@shopify/storefront-kit-react";
+} from "@shopify/hydrogen-react";
 import clsx from "clsx";
 import request from "graphql-request";
 import invariant from "tiny-invariant";
@@ -215,10 +215,7 @@ function ProductForm() {
           )}
         </AddToCartButton>
         {!isOutOfStock && (
-          <ShopPayButton
-            className="mt-4"
-            variantIds={[selectedVariant.id!]}
-          />
+          <ShopPayButton className="mt-4" variantIds={[selectedVariant.id!]} />
         )}
       </div>
     </form>

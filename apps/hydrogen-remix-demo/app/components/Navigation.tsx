@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Logo } from "@/components/Logo";
 import { Link } from "@remix-run/react";
-import { useCart } from "@shopify/storefront-kit-react";
+import { useCart } from "@shopify/hydrogen-react";
 import {} from "@heroicons/react/24/outline";
 
 export const navigation = {
