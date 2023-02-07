@@ -15,7 +15,8 @@ function genProduct() {
     href: "#",
     price: faker.commerce.price(5, 75, 2, "$"),
     quantity: 1,
-    imageSrc: faker.image.cats(undefined, undefined, true),
+    // imageSrc: faker.image.cats(undefined, undefined, true),
+    imageSrc: faker.image.imageUrl(undefined, undefined, "product", true),
     imageAlt: faker.lorem.sentence(),
   };
 }
