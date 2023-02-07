@@ -5,6 +5,7 @@ import { Link } from "@remix-run/react";
 import {
   CartLinePrice,
   CartLineProvider,
+  Money,
   useCart,
   useCartLine,
 } from "@shopify/hydrogen-react";
@@ -55,6 +56,50 @@ const products = [
   ...[...Array(3)].map(() => genProduct()),
 ];
 
+function CartLine() {
+  const line = useCartLine();
+  const { linesRemove } = useCart();
+
+  return (
+    <li className="flex py-6">
+      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+        <img
+          src={line.merchandise.image?.url}
+          alt={line.merchandise.image?.altText ?? ""}
+          className="h-full w-full object-cover object-center"
+        />
+      </div>
+      <div className="ml-4 flex flex-1 flex-col">
+        <div>
+          <div className="flex justify-between text-base font-medium text-gray-900">
+            <h3>
+              <Link to={`/products/${line.merchandise.product.handle}`}>
+                {line.merchandise.product.title}
+              </Link>
+            </h3>
+            <p className="ml-4">
+              <CartLinePrice data={line!} />
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-1 items-end justify-between text-sm">
+          <p className="text-gray-500">Qty {line.quantity}</p>
+
+          <div className="flex">
+            <button
+              type="button"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+              onClick={() => linesRemove([line.id])}
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
 function Cart({
   open,
   setOpen,
@@ -66,6 +111,7 @@ function Cart({
   title: React.ReactNode;
   children: React.ReactNode;
 }) {
+  const { cost } = useCart();
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-40" onClose={setOpen}>
@@ -124,7 +170,13 @@ function Cart({
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>$262.00!</p>
+                        <p>
+                          {cost?.subtotalAmount?.amount ? (
+                            <Money data={cost?.subtotalAmount} />
+                          ) : (
+                            "-"
+                          )}
+                        </p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
@@ -245,51 +297,6 @@ function MobileMenu({
   );
 }
 
-function CartLine() {
-  const line = useCartLine();
-  const { linesRemove } = useCart();
-
-  return (
-    <li className="flex py-6">
-      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-        <img
-          src={line.merchandise.image?.url}
-          alt={line.merchandise.image?.altText ?? ""}
-          className="h-full w-full object-cover object-center"
-        />
-      </div>
-      <div className="ml-4 flex flex-1 flex-col">
-        <div>
-          <div className="flex justify-between text-base font-medium text-gray-900">
-            <h3>
-              <Link to={`/products/${line.merchandise.product.handle}`}>
-                {line.merchandise.product.title}
-              </Link>
-            </h3>
-            <p className="ml-4">
-              <CartLinePrice data={line!} />
-            </p>
-          </div>
-          {/* <p className="mt-1 text-sm text-gray-500">{"product.color"}</p> */}
-        </div>
-        <div className="flex flex-1 items-end justify-between text-sm">
-          <p className="text-gray-500">Qty {line.quantity}</p>
-
-          <div className="flex">
-            <button
-              type="button"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-              onClick={() => linesRemove([line.id])}
-            >
-              Remove
-            </button>
-          </div>
-        </div>
-      </div>
-    </li>
-  );
-}
-
 export function Header() {
   const [cartOpen, setCartOpen] = React.useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -302,43 +309,7 @@ export function Header() {
             <CartLine />
           </CartLineProvider>
         ))}
-        {products.map((product) => (
-          <li key={product.id} className="flex py-6">
-            <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-              <img
-                src={product.imageSrc}
-                alt={product.imageAlt}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-
-            <div className="ml-4 flex flex-1 flex-col">
-              <div>
-                <div className="flex justify-between text-base font-medium text-gray-900">
-                  <h3>
-                    <a href={product.href}>{product.name}</a>
-                  </h3>
-                  <p className="ml-4">{product.price}</p>
-                </div>
-                <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-              </div>
-              <div className="flex flex-1 items-end justify-between text-sm">
-                <p className="text-gray-500">Qty {product.quantity}</p>
-
-                <div className="flex">
-                  <button
-                    type="button"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
       </Cart>
-
       <MobileMenu open={mobileMenuOpen} setOpen={setMobileMenuOpen} />
       <header className="relative overflow-hidden">
         <Navigation
