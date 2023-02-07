@@ -4,6 +4,21 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "@remix-run/react";
 import { useCart } from "@shopify/storefront-kit-react";
 import React, { Fragment } from "react";
+import { faker } from "@faker-js/faker";
+import _ from "lodash";
+
+function genProduct() {
+  return {
+    id: faker.helpers.unique(faker.datatype.number, [{ min: 3 }]),
+    name: faker.commerce.productName(),
+    color: _.capitalize(faker.color.human()),
+    href: "#",
+    price: faker.commerce.price(5, 75, 2, "$"),
+    quantity: 1,
+    imageSrc: faker.image.cats(undefined, undefined, true),
+    imageAlt: faker.lorem.sentence(),
+  };
+}
 
 const products = [
   {
@@ -30,7 +45,7 @@ const products = [
     imageAlt:
       "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
   },
-  // More products...
+  ...[...Array(3)].map(() => genProduct()),
 ];
 
 function Cart({
@@ -102,7 +117,7 @@ function Cart({
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                         <p>Subtotal</p>
-                        <p>$262.00</p>
+                        <p>$262.00!</p>
                       </div>
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
@@ -269,7 +284,10 @@ export function Header() {
 
       <MobileMenu open={mobileMenuOpen} setOpen={setMobileMenuOpen} />
       <header className="relative overflow-hidden">
-        <Navigation setCartOpen={setCartOpen} setMobileMenuOpen={setMobileMenuOpen} />
+        <Navigation
+          setCartOpen={setCartOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
       </header>
     </>
   );
