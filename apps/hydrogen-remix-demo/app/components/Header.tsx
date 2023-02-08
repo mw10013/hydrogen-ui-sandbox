@@ -11,53 +11,9 @@ import {
   useCartLine,
 } from "@shopify/hydrogen-react";
 import React, { Fragment, useMemo } from "react";
-import { faker } from "@faker-js/faker";
-import _ from "lodash";
 import type { CartLine as TCartLine } from "@shopify/hydrogen-react/storefront-api-types";
 import invariant from "tiny-invariant";
 import { CartLineQuantityAdjustButton } from "@/components/CartLineQuantityAdjustButton";
-
-function genProduct() {
-  return {
-    id: faker.helpers.unique(faker.datatype.number, [{ min: 3 }]),
-    name: faker.commerce.productName(),
-    color: _.capitalize(faker.color.human()),
-    href: "#",
-    price: faker.commerce.price(5, 75, 2, "$"),
-    quantity: 1,
-    // imageSrc: faker.image.cats(undefined, undefined, true),
-    imageSrc: faker.image.imageUrl(undefined, undefined, "product", true),
-    imageAlt: faker.lorem.sentence(),
-  };
-}
-
-const products = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  ...[...Array(3)].map(() => genProduct()),
-];
 
 export function CartShopPayButton(
   props: Omit<React.ComponentProps<typeof ShopPayButton>, "variantIds">
@@ -85,20 +41,20 @@ export function CartShopPayButton(
 function CartLineQuantityAdjust() {
   const line = useCartLine();
   return (
-    <div className="flex items-center border rounded text-gray-500">
+    <div className="flex items-center border rounded ">
       <CartLineQuantityAdjustButton
         adjust="decrease"
         aria-label="Decrease quantity"
-        className="w-10 h-10 transition hover:text-gray-900 disabled:cursor-wait"
+        className="w-10 h-10 transition text-gray-500 hover:text-gray-900 disabled:cursor-wait"
       >
         &#8722;
       </CartLineQuantityAdjustButton>
       {/* <CartLineQuantity as="div" className="px-2 text-center" /> */}
-      <p className="text-gray-500">{line.quantity}</p>
+      <p className="text-gray-500 text-center">{line.quantity}</p>
       <CartLineQuantityAdjustButton
         adjust="increase"
         aria-label="Increase quantity"
-        className="w-10 h-10 transition hover:text-gray-900 disabled:cursor-wait"
+        className="w-10 h-10 transition hover:text-gray-900 disabled:cursor-wait text-gray-500"
       >
         &#43;
       </CartLineQuantityAdjustButton>
@@ -133,7 +89,6 @@ function CartLine() {
           </div>
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
-          {/* <p className="text-gray-500">Qty {line.quantity}</p> */}
           <CartLineQuantityAdjust />
 
           <div className="flex">
