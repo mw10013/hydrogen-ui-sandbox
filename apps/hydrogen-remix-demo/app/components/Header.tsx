@@ -6,13 +6,16 @@ import {
   CartLinePrice,
   CartLineProvider,
   Money,
+  ShopPayButton,
   useCart,
   useCartLine,
 } from "@shopify/hydrogen-react";
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import { faker } from "@faker-js/faker";
 import _ from "lodash";
-import { CartLine as TCartLine } from "@shopify/hydrogen-react/storefront-api-types";
+import type { CartLine as TCartLine } from "@shopify/hydrogen-react/storefront-api-types";
+import invariant from "tiny-invariant";
+import { CartLineQuantityAdjustButton } from "@/components/CartLineQuantityAdjustButton";
 
 function genProduct() {
   return {
@@ -56,6 +59,53 @@ const products = [
   ...[...Array(3)].map(() => genProduct()),
 ];
 
+export function CartShopPayButton(
+  props: Omit<React.ComponentProps<typeof ShopPayButton>, "variantIds">
+) {
+  const { lines } = useCart();
+  invariant(lines, "Missing lines");
+  const idsAndQuantities = useMemo(() => {
+    return lines.map((line) => {
+      invariant(
+        line && line.merchandise && line.merchandise.id && line.quantity,
+        "Invalid line"
+      );
+      return {
+        id: line?.merchandise?.id,
+        quantity: line?.quantity,
+      };
+    });
+  }, [lines]);
+  return React.createElement(ShopPayButton, {
+    variantIdsAndQuantities: idsAndQuantities,
+    ...props,
+  });
+}
+
+function CartLineQuantityAdjust() {
+  const line = useCartLine();
+  return (
+    <div className="flex items-center border rounded text-gray-500">
+      <CartLineQuantityAdjustButton
+        adjust="decrease"
+        aria-label="Decrease quantity"
+        className="w-10 h-10 transition hover:text-gray-900 disabled:cursor-wait"
+      >
+        &#8722;
+      </CartLineQuantityAdjustButton>
+      {/* <CartLineQuantity as="div" className="px-2 text-center" /> */}
+      <p className="text-gray-500">{line.quantity}</p>
+      <CartLineQuantityAdjustButton
+        adjust="increase"
+        aria-label="Increase quantity"
+        className="w-10 h-10 transition hover:text-gray-900 disabled:cursor-wait"
+      >
+        &#43;
+      </CartLineQuantityAdjustButton>
+    </div>
+  );
+}
+
 function CartLine() {
   const line = useCartLine();
   const { linesRemove } = useCart();
@@ -83,7 +133,8 @@ function CartLine() {
           </div>
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
-          <p className="text-gray-500">Qty {line.quantity}</p>
+          {/* <p className="text-gray-500">Qty {line.quantity}</p> */}
+          <CartLineQuantityAdjust />
 
           <div className="flex">
             <button
@@ -189,6 +240,7 @@ function Cart({
                           Checkout
                         </a>
                       </div>
+                      <CartShopPayButton className="mt-4" />
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
                           or{" "}
