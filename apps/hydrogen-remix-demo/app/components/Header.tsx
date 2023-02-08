@@ -14,6 +14,7 @@ import React, { Fragment, useMemo } from "react";
 import type { CartLine as TCartLine } from "@shopify/hydrogen-react/storefront-api-types";
 import invariant from "tiny-invariant";
 import { CartLineQuantityAdjustButton } from "@/components/CartLineQuantityAdjustButton";
+import { optional } from "zod";
 
 export function CartShopPayButton(
   props: Omit<React.ComponentProps<typeof ShopPayButton>, "variantIds">
@@ -88,7 +89,13 @@ function CartLine() {
             </p>
           </div>
         </div>
-        <div className="flex flex-1 items-end justify-between text-sm">
+        {(line.merchandise.selectedOptions || []).map((option) => (
+          <p key={line.id} className="mt-1 text-sm text-gray-500">
+            {option.name}: {option.value}
+          </p>
+        ))}
+
+        <div className="flex flex-1 items-end justify-between text-sm mt-1">
           <CartLineQuantityAdjust />
 
           <div className="flex">
